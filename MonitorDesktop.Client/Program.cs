@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
-using MonitorDesktop.Shared;
 
 namespace MonitorDesktop.Client
 {
