@@ -1,35 +1,19 @@
 ﻿using System;
-using System.Reactive;
-using MonitorDesktop.Shared;
-using WebSocketSharp;
 using WebSocketSharp.Server;
 
 namespace MonitorDesktop.Server
 {
-    public class ReactiveWebSocketServer : IReactiveSocketListener, IDisposable
+    public class ReactiveWebSocketServer
     {
         private readonly WebSocketServer _server;
 
-        public IObservable<Unit> OnOpenEvent { get; private set; }
-        public IObservable<CloseEventArgs> OnCloseEvent { get; private set; }
-        public IObservable<MessageEventArgs> OnMessageEvent { get; private set; }
-        public IObservable<ErrorEventArgs> OnErrorEvent { get; private set; }
+        public ReactiveWebSocketServer(string url) => _server = new WebSocketServer(url);
 
-        public ReactiveWebSocketServer(string url)
-        {
-            _server = new WebSocketServer(url);
-            
-            _server.AddWebSocketService<ReactiveSocketListener>("/poop", reactive =>
-            {
-                OnOpenEvent = reactive.OnOpenEvent;
-                OnCloseEvent = reactive.OnCloseEvent;
-                OnMessageEvent = reactive.OnMessageEvent;
-                OnErrorEvent = reactive.OnErrorEvent;
-            });
+        public void Start() => _server.Start();
 
-            _server.Start();
-        }
+        public void AddEndpoint(string path, Action<ReactiveSocketListener> listenerSubscriber) 
+            => _server.AddWebSocketService<ReactiveSocketListener>(path, listenerSubscriber);
 
-        public void Dispose() => _server.Stop();
+        public void Stop() => _server.Stop();
     }
 }

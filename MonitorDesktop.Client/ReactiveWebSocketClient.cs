@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
+using Microsoft.Extensions.Logging;
 using MonitorDesktop.Shared;
 using WebSocketSharp;
 using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
@@ -11,19 +12,22 @@ namespace MonitorDesktop.Client
     public class ReactiveWebSocketClient : IReactiveSocketListener, IDisposable
     {
         private readonly WebSocket _client;
+        private readonly ILogger<ReactiveWebSocketClient> _logger;
 
         public IObservable<Unit> OnOpenEvent { get; private set; }
         public IObservable<CloseEventArgs> OnCloseEvent { get; private set; }
         public IObservable<MessageEventArgs> OnMessageEvent { get; private set; }
         public IObservable<ErrorEventArgs> OnErrorEvent { get; private set; }
 
-        public ReactiveWebSocketClient(string url)
+        public ReactiveWebSocketClient(string url, ILogger<ReactiveWebSocketClient> logger)
         {
             _client = new WebSocket(url);
-            _client.Connect();
-            
+            _logger = logger;
+         
             CreateObservables();
         }
+
+        public void Connect() => _client.Connect();
 
         private void CreateObservables()
         {

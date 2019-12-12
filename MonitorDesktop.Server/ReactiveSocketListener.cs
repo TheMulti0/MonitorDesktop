@@ -7,7 +7,7 @@ using MonitorDesktop.Shared;
 
 namespace MonitorDesktop.Server
 {
-    internal class ReactiveSocketListener : WebSocketBehavior, IReactiveSocketListener
+    public class ReactiveSocketListener : WebSocketBehavior, IReactiveSocketListener
     {
         private readonly Subject<CloseEventArgs> _onCloseSubject = new Subject<CloseEventArgs>();
         private readonly Subject<ErrorEventArgs> _onErrorSubject = new Subject<ErrorEventArgs>();
