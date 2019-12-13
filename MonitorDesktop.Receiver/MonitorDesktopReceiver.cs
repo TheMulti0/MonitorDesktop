@@ -1,45 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using MonitorDesktop.Shared;
 using WebSocketSharp;
 
-namespace MonitorDesktop.Server
+namespace MonitorDesktop.Receiver
 {
-    internal class Program
+    public class MonitorDesktopReceiver
     {
         private readonly string _imagesPath;
+        private readonly ReactiveWebSocketServer _server;
 
-        public static Task Main(string[] args) => new Program().Main();
-
-        public Program()
+        public MonitorDesktopReceiver()
         {
             _imagesPath = Path.Combine(DirectoryExtensions.GetProjectPath(), "images");
+            _server = new ReactiveWebSocketServer("ws://localhost:3000");
         }
 
-
-        internal Task Main()
+        public void Start()
         {
             if (!Directory.Exists(_imagesPath))
             {
                 Directory.CreateDirectory(_imagesPath);
             }
 
-            var server = new ReactiveWebSocketServer("ws://localhost:3000");
-            server.Start();
-            server.AddEndpoint(
-                "/",
-                listener =>
-                {
-                    listener.OnCloseEvent.Subscribe(OnClose);
-                    listener.OnMessageEvent.Subscribe(OnMessageReceived);
-                });
+            _server.Start();
 
-            return Task.Delay(-1);
+            _server.AddEndpoint("/", RegisterEvents);
+        }
+
+        private void RegisterEvents(ReactiveSocketListener listener)
+        {
+            listener.OnCloseEvent.Subscribe(OnClose);
+            listener.OnMessageEvent.Subscribe(OnMessageReceived);
         }
 
         private void OnClose(CloseEventArgs args)

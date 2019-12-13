@@ -1,7 +1,7 @@
 ﻿using System;
 using WebSocketSharp.Server;
 
-namespace MonitorDesktop.Server
+namespace MonitorDesktop.Receiver
 {
     public class ReactiveWebSocketServer
     {

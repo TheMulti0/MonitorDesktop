@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MonitorDesktop.Sender
+namespace MonitorDesktop.Receiver
 {
     internal class Program
     {
@@ -8,7 +8,7 @@ namespace MonitorDesktop.Sender
 
         internal Task Main()
         {
-            new MonitorDesktopSender().Start();
+            new MonitorDesktopReceiver().Start();
             return Task.Delay(-1);
         }
     }

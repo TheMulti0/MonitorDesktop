@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reactive.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MonitorDesktop.Sender;
 using MonitorDesktop.Shared;
 
-namespace MonitorDesktop.Client
+namespace MonitorDesktop.Sender
 {
     public class MonitorDesktopSender
     {
@@ -51,7 +49,7 @@ namespace MonitorDesktop.Client
 
         private void SendScreenshot()
         {
-            var image = GDICapture.CaptureScreen();
+            var image = GdiCapture.CaptureScreen();
 
             _logger.LogInformation($"Screenshot snapped at { DateTime.Now }");
 

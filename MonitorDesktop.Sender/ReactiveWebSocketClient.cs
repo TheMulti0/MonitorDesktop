@@ -7,7 +7,7 @@ using MonitorDesktop.Shared;
 using WebSocketSharp;
 using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 
-namespace MonitorDesktop.Client
+namespace MonitorDesktop.Sender
 {
     public class ReactiveWebSocketClient : IReactiveSocketListener, IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace MonitorDesktop.Client
+﻿namespace MonitorDesktop.Sender
 {
     internal class Settings
     {
