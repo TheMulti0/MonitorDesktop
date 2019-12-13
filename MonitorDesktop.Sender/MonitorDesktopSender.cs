@@ -3,30 +3,25 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MonitorDesktop.Sender;
 using MonitorDesktop.Shared;
 
 namespace MonitorDesktop.Client
 {
-    internal class Program
+    public class MonitorDesktopSender
     {
-        private const double FramesPerSecond = 30;
+        private readonly ReactiveWebSocketClient _client;
+        private readonly Settings _settings;
+        private readonly ILogger<Program> _logger;
 
-        private Settings _settings;
-        private ILogger<Program> _logger;
-        private ReactiveWebSocketClient _client;
-
-        private static Task Main(string[] args) => new Program().Main();
-
-        public Task Main()
+        public MonitorDesktopSender()
         {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
             var config = ReadConfiguration();
-            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole().AddConfiguration(config));
+            
+            var loggerFactory = LoggerFactory.Create(
+                builder => builder.AddConsole().AddConfiguration(config));
 
             _logger = loggerFactory.CreateLogger<Program>();
 
@@ -34,14 +29,6 @@ namespace MonitorDesktop.Client
             _client = new ReactiveWebSocketClient(
                 $"ws://{_settings.Host}:{_settings.Port}",
                 loggerFactory.CreateLogger<ReactiveWebSocketClient>());
-
-            stopWatch.Stop();
-            _logger.LogInformation($"Initialized in {stopWatch.Elapsed.TotalSeconds}s");
-
-            _client.Connect();
-            Initialize();
-
-            return Task.Delay(-1);
         }
 
         private static IConfigurationRoot ReadConfiguration() =>
@@ -50,15 +37,19 @@ namespace MonitorDesktop.Client
                 .AddJsonFile("appconfig.json")
                 .Build();
 
-        private void Initialize()
+        public void Start()
         {
+            _logger.LogInformation("Initialized");
+
+            _client.Connect();
+
             Observable
                 .Interval(
-                    TimeSpan.FromMilliseconds(1000 / FramesPerSecond))
-                .Subscribe(l => SendImage());
+                    TimeSpan.FromSeconds(1000 / _settings.FramesPerSecond))
+                .Subscribe(_ => SendScreenshot());
         }
 
-        private void SendImage()
+        private void SendScreenshot()
         {
             var image = GDICapture.CaptureScreen();
 

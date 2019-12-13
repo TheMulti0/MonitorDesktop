@@ -2,12 +2,12 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace MonitorDesktop.Client
+namespace MonitorDesktop.Sender
 {
     /// <summary>
     /// Provides functions to capture the entire screen, or a particular window
     /// </summary>
-    public class GDICapture
+    public class GdiCapture
     {
         /// <summary>
         /// Creates an Image object containing a screen shot of the entire desktop
