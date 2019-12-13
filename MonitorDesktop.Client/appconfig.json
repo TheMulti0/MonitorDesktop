@@ -1,0 +1,6 @@
+﻿{
+  "settings": {
+    "Host": "localhost",
+    "Port":  3000 
+  } 
+}

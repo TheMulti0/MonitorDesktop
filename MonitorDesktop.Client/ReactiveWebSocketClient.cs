@@ -58,7 +58,10 @@ namespace MonitorDesktop.Client
 
         public void Dispose() => _client.CloseAsync();
 
-        public void SendAsync(Stream stream, int length) 
-            => _client.Send(stream, length);
+        public void SendAsync(Stream stream, int length)
+        {
+            _client.Send(stream, length);
+            _logger.LogInformation($"Sent a stream with the length of {length} bytes");
+        }
     }
 }
