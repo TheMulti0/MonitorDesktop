@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using MonitorDesktop.Shared;
 using WebSocketSharp;
 
@@ -9,32 +12,47 @@ namespace MonitorDesktop.Server
 {
     internal class Program
     {
-        private static void Main(string[] args) => new Program().Main();
+        private readonly string _imagesPath;
 
-        public void Main()
+        public static Task Main(string[] args) => new Program().Main();
+
+        public Program()
         {
+            _imagesPath = Path.Combine(DirectoryExtensions.GetProjectPath(), "images");
+        }
+
+
+        internal Task Main()
+        {
+            if (!Directory.Exists(_imagesPath))
+            {
+                Directory.CreateDirectory(_imagesPath);
+            }
+
             var server = new ReactiveWebSocketServer("ws://localhost:3000");
-
             server.Start();
-
             server.AddEndpoint(
                 "/",
-                listener => 
-                    listener.OnOpenEvent.Subscribe(unit => Initialize(listener)));
+                listener =>
+                {
+                    listener.OnCloseEvent.Subscribe(OnClose);
+                    listener.OnMessageEvent.Subscribe(OnMessageReceived);
+                });
 
-            Console.ReadKey();
+            return Task.Delay(-1);
         }
 
-        private void Initialize(IReactiveSocketListener listener)
+        private void OnClose(CloseEventArgs args)
         {
-            listener.OnMessageEvent.Subscribe(OnNext);
+            Directory.Delete(_imagesPath, true);
         }
 
-        private void OnNext(MessageEventArgs e)
+        private void OnMessageReceived(MessageEventArgs args)
         {
-            var a = new MemoryStream(e.RawData);
-            var img = Image.FromStream(a);
-            img.Save($"poop-{DateTime.Now.Ticks}.png", ImageFormat.Png);
+            if (!args.IsBinary) return;
+
+            var filename = Path.Combine(_imagesPath, $"poop-{DateTime.Now.Ticks}.png");
+            File.WriteAllBytesAsync(filename, args.RawData);
         }
     }
 }

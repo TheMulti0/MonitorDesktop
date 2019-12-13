@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Subjects;
 using WebSocketSharp;
@@ -13,6 +15,8 @@ namespace MonitorDesktop.Server
         private readonly Subject<ErrorEventArgs> _onErrorSubject = new Subject<ErrorEventArgs>();
         private readonly Subject<MessageEventArgs> _onMessageSubject = new Subject<MessageEventArgs>();
         private readonly Subject<Unit> _onOpenSubject = new Subject<Unit>();
+
+        public IEnumerable<IWebSocketSession> SocketSessions => this.Sessions.Sessions;
 
         public IObservable<Unit> OnOpenEvent => _onOpenSubject;
         public IObservable<CloseEventArgs> OnCloseEvent => _onCloseSubject;
