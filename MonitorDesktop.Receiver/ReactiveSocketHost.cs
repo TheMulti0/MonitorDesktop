@@ -7,7 +7,7 @@ using WebSocketSharp.Server;
 
 namespace MonitorDesktop.Receiver
 {
-    public class ReactiveSocketListener : WebSocketBehavior, IReactiveSocketListener
+    public class ReactiveSocketHost : WebSocketBehavior, IReactiveConnectionHost
     {
         private readonly Subject<CloseEventArgs> _onCloseSubject = new Subject<CloseEventArgs>();
         private readonly Subject<ErrorEventArgs> _onErrorSubject = new Subject<ErrorEventArgs>();

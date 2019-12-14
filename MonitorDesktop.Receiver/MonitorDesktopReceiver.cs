@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MonitorDesktop.Shared;
 using WebSocketSharp;
 
@@ -9,26 +11,51 @@ namespace MonitorDesktop.Receiver
     {
         private readonly string _imagesPath;
         private readonly ReactiveWebSocketServer _server;
+        private readonly ILogger<MonitorDesktopReceiver> _logger;
+        private readonly Settings _settings;
+        private readonly string _url;
 
-        public MonitorDesktopReceiver()
+        public MonitorDesktopReceiver(string configPath)
         {
-            _imagesPath = Path.Combine(DirectoryExtensions.GetProjectPath(), "images");
-            _server = new ReactiveWebSocketServer("ws://localhost:3000");
+            var config = ReadConfiguration(configPath);
+
+            _logger = LoggerFactory
+                .Create(builder => builder
+                    .AddConsole()
+                    .AddConfiguration(config))
+                .CreateLogger<MonitorDesktopReceiver>();
+
+            _settings = config.GetSection("Settings").Get<Settings>();
+            _imagesPath = Path.Combine(DirectoryExtensions.GetProjectPath(), _settings.ImagesPath);
+
+            _url = $"ws://{_settings.Host}:{_settings.Port}";
+            _server = new ReactiveWebSocketServer(_url);
         }
+
+        private static IConfigurationRoot ReadConfiguration(string configPath) =>
+            new ConfigurationBuilder()
+                .SetBasePath(configPath)
+                .AddJsonFile("appconfig.json")
+                .Build();
 
         public void Start()
         {
+            _logger.LogInformation("Initialized receiver");
+
             if (!Directory.Exists(_imagesPath))
             {
                 Directory.CreateDirectory(_imagesPath);
+                _logger.LogInformation($"Created new empty directory at /{_settings.ImagesPath}");
             }
 
             _server.Start();
+            _logger.LogInformation("Server started");
 
             _server.AddEndpoint("/", RegisterEvents);
+            _logger.LogInformation($"Registered endpoint at / ({_url})");
         }
 
-        private void RegisterEvents(ReactiveSocketListener listener)
+        private void RegisterEvents(ReactiveSocketHost listener)
         {
             listener.OnCloseEvent.Subscribe(OnClose);
             listener.OnMessageEvent.Subscribe(OnMessageReceived);

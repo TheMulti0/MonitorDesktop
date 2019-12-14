@@ -14,9 +14,9 @@ namespace MonitorDesktop.Sender
         private readonly Settings _settings;
         private readonly ILogger<Program> _logger;
 
-        public MonitorDesktopSender()
+        public MonitorDesktopSender(string configPath)
         {
-            var config = ReadConfiguration();
+            var config = ReadConfiguration(configPath);
             
             var loggerFactory = LoggerFactory.Create(
                 builder => builder.AddConsole().AddConfiguration(config));
@@ -29,15 +29,15 @@ namespace MonitorDesktop.Sender
                 loggerFactory.CreateLogger<ReactiveWebSocketClient>());
         }
 
-        private static IConfigurationRoot ReadConfiguration() =>
+        private static IConfigurationRoot ReadConfiguration(string configPath) =>
             new ConfigurationBuilder()
-                .SetBasePath(DirectoryExtensions.GetProjectPath())
+                .SetBasePath(configPath)
                 .AddJsonFile("appconfig.json")
                 .Build();
 
         public void Start()
         {
-            _logger.LogInformation("Initialized");
+            _logger.LogInformation("Initialized sender");
 
             _client.Connect();
 

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using MonitorDesktop.Shared;
 
 namespace MonitorDesktop.Receiver
 {
@@ -8,7 +9,7 @@ namespace MonitorDesktop.Receiver
 
         internal Task Main()
         {
-            new MonitorDesktopReceiver().Start();
+            new MonitorDesktopReceiver(DirectoryExtensions.GetProjectPath()).Start();
             return Task.Delay(-1);
         }
     }

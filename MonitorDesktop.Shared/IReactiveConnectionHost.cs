@@ -4,7 +4,7 @@ using WebSocketSharp;
 
 namespace MonitorDesktop.Shared
 {
-    public interface IReactiveSocketListener
+    public interface IReactiveConnectionHost
     {
         IObservable<Unit> OnOpenEvent { get; }
         IObservable<CloseEventArgs> OnCloseEvent { get; }

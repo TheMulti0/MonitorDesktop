@@ -1,0 +1,7 @@
+﻿{
+  "Settings": {
+    "Host": "localhost",
+    "Port": 3000,
+    "ImagesPath": "images"
+  } 
+}

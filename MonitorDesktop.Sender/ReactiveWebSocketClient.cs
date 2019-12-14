@@ -9,7 +9,7 @@ using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 
 namespace MonitorDesktop.Sender
 {
-    public class ReactiveWebSocketClient : IReactiveSocketListener, IDisposable
+    public class ReactiveWebSocketClient : IReactiveConnectionHost, IDisposable
     {
         private readonly WebSocket _client;
         private readonly ILogger<ReactiveWebSocketClient> _logger;

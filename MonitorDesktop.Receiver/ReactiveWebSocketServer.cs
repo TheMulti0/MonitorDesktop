@@ -11,8 +11,8 @@ namespace MonitorDesktop.Receiver
 
         public void Start() => _server.Start();
 
-        public void AddEndpoint(string path, Action<ReactiveSocketListener> listenerSubscriber) 
-            => _server.AddWebSocketService<ReactiveSocketListener>(path, listenerSubscriber);
+        public void AddEndpoint(string path, Action<ReactiveSocketHost> listenerSubscriber) 
+            => _server.AddWebSocketService<ReactiveSocketHost>(path, listenerSubscriber);
 
         public void Stop() => _server.Stop();
     }
