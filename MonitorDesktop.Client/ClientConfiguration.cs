@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-using MonitorDesktop.Api;
+﻿using MonitorDesktop.Api;
 
 namespace MonitorDesktop.Client
 {

@@ -10,7 +10,6 @@ namespace MonitorDesktop.Server
     {
         private readonly IConnection _connection;
         private readonly ServerConfiguration _configuration;
-        private IDisposable? _connectionSubscription;
 
         public Server(
             IConnection connection,
@@ -29,19 +28,12 @@ namespace MonitorDesktop.Server
             
             _connection.Start();
             
-            _connectionSubscription = _connection.Connection.Subscribe(
-                OnConnection,
-                e => OnDisconnection(),
-                OnDisconnection);
+            _connection.Connection.Subscribe(OnConnection);
         }
 
         private void OnConnection(ConnectionObservation observation)
         {
             _connection.Message.SubscribeAsync(OnMessageAsync);
-        }
-
-        private void OnDisconnection()
-        {
         }
 
         private Task OnMessageAsync(MessageObservation message)

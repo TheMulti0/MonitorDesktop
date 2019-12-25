@@ -5,20 +5,21 @@ using System.Runtime.InteropServices;
 namespace MonitorDesktop.Client
 {
     /// <summary>
-    ///     Provides functions to capture the entire screen, or a particular window,
-    ///     wraps GDI+ C++ functions (using Platform Invoke)
+    /// Provides functions to capture the entire screen, or a particular window,
+    /// wraps GDI+ C++ functions (using Platform/Invoke)
+    /// External code
     /// </summary>
     internal class GdiCapture
     {
         /// <summary>
-        ///     Creates an Image object containing a screen shot of the entire desktop
+        ///  Creates an Image object containing a screen shot of the entire desktop
         /// </summary>
         /// <returns></returns>
         public static Image CaptureScreen()
             => CaptureWindow(User32.GetDesktopWindow());
 
         /// <summary>
-        ///     Creates an Image object containing a screen shot of a specific window
+        ///  Creates an Image object containing a screen shot of a specific window
         /// </summary>
         /// <param name="handle">The handle to the window. (In windows forms, this is obtained by the Handle property)</param>
         /// <returns></returns>
@@ -55,7 +56,7 @@ namespace MonitorDesktop.Client
         }
 
         /// <summary>
-        ///     Helper class containing Gdi32 API functions
+        /// Helper class containing Gdi32 API functions
         /// </summary>
         private static class Gdi32
         {
@@ -93,7 +94,7 @@ namespace MonitorDesktop.Client
         }
 
         /// <summary>
-        ///     Helper class containing User32 API functions
+        /// Helper class containing User32 API functions
         /// </summary>
         private static class User32
         {
