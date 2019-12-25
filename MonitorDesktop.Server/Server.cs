@@ -6,12 +6,12 @@ using MonitorDesktop.Extensions;
 
 namespace MonitorDesktop.Server
 {
-    public class Server 
+    public class Server : IConnectionConsumer<ServerConfiguration>
     {
-        private readonly IConnection _connection;
-        private readonly ServerConfiguration _configuration;
+        private IConnection _connection;
+        private ServerConfiguration _configuration;
 
-        public Server(
+        public void Initialize(
             IConnection connection,
             ServerConfiguration configuration)
         {

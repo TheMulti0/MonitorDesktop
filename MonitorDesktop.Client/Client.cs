@@ -6,13 +6,13 @@ using MonitorDesktop.Api;
 
 namespace MonitorDesktop.Client
 {
-    public class Client
+    public class Client : IConnectionConsumer<ClientConfiguration>
     {
-        private readonly IConnection _connection;
-        private readonly ClientConfiguration _configuration;
+        private IConnection _connection;
+        private ClientConfiguration _configuration;
         private IDisposable? _timer;
 
-        public Client(
+        public void Initialize(
             IConnection connection,
             ClientConfiguration configuration)
         {

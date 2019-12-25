@@ -15,7 +15,8 @@ namespace MonitorDesktop.Server
             IConnection connection = new WebSocketConnection();
             connection.Initialize(config);
 
-            var server = new Server(connection, config);
+            var server = new Server();
+            server.Initialize(connection, config);
             server.Start();
 
             await Task.Delay(-1);
