@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.3.1" />
+    <PackageReference Include="Websocket.Client" Version="4.1.74" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MonitorDesktop.Api\MonitorDesktop.Api.csproj" />
+    <ProjectReference Include="..\MonitorDesktop.Extensions\MonitorDesktop.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

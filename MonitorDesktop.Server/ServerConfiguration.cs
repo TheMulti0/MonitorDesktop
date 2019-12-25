@@ -1,6 +1,8 @@
-﻿namespace MonitorDesktop.Receiver
+using MonitorDesktop.Api;
+
+namespace MonitorDesktop.Server
 {
-    public class Settings
+    public class ServerConfiguration : IConfiguration
     {
         public string Host { get; set; }
 
