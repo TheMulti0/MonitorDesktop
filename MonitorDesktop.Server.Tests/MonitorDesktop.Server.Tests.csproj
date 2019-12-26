@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+        <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+        <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+        <PackageReference Include="coverlet.collector" Version="1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MonitorDesktop.Api\MonitorDesktop.Api.csproj" />
+      <ProjectReference Include="..\MonitorDesktop.Extensions\MonitorDesktop.Extensions.csproj" />
+      <ProjectReference Include="..\MonitorDesktop.Server.Sockets\MonitorDesktop.Server.Sockets.csproj" />
+      <ProjectReference Include="..\MonitorDesktop.Server\MonitorDesktop.Server.csproj" />
+    </ItemGroup>
+
+</Project>

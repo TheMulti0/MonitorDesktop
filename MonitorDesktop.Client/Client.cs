@@ -6,39 +6,38 @@ using MonitorDesktop.Api;
 
 namespace MonitorDesktop.Client
 {
-    public class Client : IConnectionConsumer<ClientConfiguration>
+    public class Client : ConnectionConsumerBase<ClientConfiguration>
     {
-        private IConnection _connection;
-        private ClientConfiguration _configuration;
+        private readonly ConnectionBase _connection;
+        private readonly ClientConfiguration _configuration;
         private IDisposable? _timer;
 
-        public void Initialize(
-            IConnection connection,
-            ClientConfiguration configuration)
+        public Client(
+            ConnectionBase connection,
+            ClientConfiguration configuration) : base(connection, configuration)
         {
             _connection = connection;
             _configuration = configuration;
         }
 
-        public void Start()
+        public override void Start()
         {
             _connection.Start();
 
             _connection
-                .Connection
+                .ConnectionChanged
                 .Subscribe(
                     OnConnection,
                     e => OnDisconnection(),
                     OnDisconnection);
         }
 
-        private void OnConnection(ConnectionObservation args)
-        {
-            _timer = Observable
-                .Interval(
-                    TimeSpan.FromSeconds(1 / _configuration.FramesPerSecond))
-                .Subscribe(interval => SendMessage());
-        }
+        public override void Dispose() => _connection.Dispose();
+
+        private void OnConnection(ConnectionObservation args) => _timer = Observable
+            .Interval(
+                TimeSpan.FromSeconds(1 / _configuration.FramesPerSecond))
+            .Subscribe(interval => SendMessage());
 
         private void SendMessage()
         {
@@ -46,13 +45,10 @@ namespace MonitorDesktop.Client
             GdiCapture
                 .CaptureScreen()
                 .Save(stream, ImageFormat.Png);
-            
+
             _connection.Send(stream.ToArray());
         }
 
-        private void OnDisconnection()
-        {
-            _timer?.Dispose();
-        }
+        private void OnDisconnection() => _timer?.Dispose();
     }
 }

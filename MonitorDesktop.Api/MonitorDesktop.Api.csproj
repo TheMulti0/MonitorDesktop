@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Optionally" Version="2.2.1.1" />
     <PackageReference Include="System.Reactive" Version="4.3.1" />
   </ItemGroup>
 

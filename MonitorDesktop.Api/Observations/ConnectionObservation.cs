@@ -1,14 +1,18 @@
 ﻿using System;
+using Optionally;
 
 namespace MonitorDesktop.Api
 {
+    /// <summary>
+    /// Arguments for a push-based connection changed event 
+    /// </summary>
     public class ConnectionObservation
     {
-        public Uri Uri { get; }
+        public IResult<Exception, ConnectionState> Info { get; }
 
-        public ConnectionObservation(Uri uri)
+        public ConnectionObservation(IResult<Exception, ConnectionState> info)
         {
-            Uri = uri;
+            Info = info;
         }
     }
 }

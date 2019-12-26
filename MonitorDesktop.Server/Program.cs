@@ -12,11 +12,9 @@ namespace MonitorDesktop.Server
             var config = await ConfigurationExtensions
                 .ReadConfigurationAsync<ServerConfiguration>("appconfig.json");
 
-            IConnection connection = new WebSocketConnection();
-            connection.Initialize(config);
+            ConnectionBase connection = new WebSocketConnection(config);
 
-            var server = new Server();
-            server.Initialize(connection, config);
+            var server = new Server(connection, config);
             server.Start();
 
             await Task.Delay(-1);

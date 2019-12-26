@@ -6,16 +6,16 @@ using WebSocketSharp.Server;
 
 namespace MonitorDesktop.Server.Sockets
 {
-    public class WebSocketConnection : IConnection
+    public class WebSocketConnection : ConnectionBase
     {
-        private readonly Subject<ConnectionObservation> _connection = new Subject<ConnectionObservation>();
-        private readonly Subject<MessageObservation> _message = new Subject<MessageObservation>();
-        private WebSocketServer _server;
+        private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
+        private readonly Subject<MessageObservation> _messageReceived = new Subject<MessageObservation>();
+        private readonly WebSocketServer _server;
 
-        public IObservable<ConnectionObservation> Connection => _connection;
-        public IObservable<MessageObservation> Message => _message;
+        public override IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
+        public override IObservable<MessageObservation> MessageReceived => _messageReceived;
 
-        public void Initialize(IConfiguration configuration)
+        public WebSocketConnection(IConfiguration configuration) : base(configuration)
         {
             var url = configuration.MakeUri("ws")
                 .ToString();
@@ -25,26 +25,26 @@ namespace MonitorDesktop.Server.Sockets
                 listener =>
                 {
                     listener.Connection.Subscribe(
-                        _connection.OnNext,
-                        _connection.OnError,
-                        _connection.OnCompleted);
+                        _connectionChanged.OnNext,
+                        _connectionChanged.OnError,
+                        _connectionChanged.OnCompleted);
 
                     listener.Message.Subscribe(
-                        _message.OnNext,
-                        _message.OnError,
-                        _message.OnCompleted);
+                        _messageReceived.OnNext,
+                        _messageReceived.OnError,
+                        _messageReceived.OnCompleted);
                 });
         }
 
-        public void Start() => _server.Start();
+        public override void Start() => _server.Start();
 
-        public void Send(byte[] message)
+        public override void Send(byte[] message)
             => throw new InvalidOperationException("WebSocketSharp server does not support sending messages");
 
-        public void Dispose()
+        public override void Dispose()
         {
-            _connection.Dispose();
-            _message.Dispose();
+            _connectionChanged.Dispose();
+            _messageReceived.Dispose();
             
             _server.Stop();
         }

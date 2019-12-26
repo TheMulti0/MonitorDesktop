@@ -3,45 +3,48 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using MonitorDesktop.Api;
 using MonitorDesktop.Extensions;
+using Optionally;
 using Websocket.Client;
 
 namespace MonitorDesktop.Client.Sockets
 {
-    public class WebSocketConnection : IConnection
+    public class WebSocketConnection : ConnectionBase
     {
         private readonly Subject<ConnectionObservation> _connection;
-        private WebsocketClient _client;
+        private readonly WebsocketClient _client;
 
-        public IObservable<ConnectionObservation> Connection => _connection;
-        public IObservable<MessageObservation> Message { get; private set; }
+        public override IObservable<ConnectionObservation> ConnectionChanged => _connection;
+        public override IObservable<MessageObservation> MessageReceived { get; }
 
-        public WebSocketConnection() 
-            => _connection = new Subject<ConnectionObservation>();
-
-        public void Initialize(IConfiguration configuration)
+        public WebSocketConnection(IConfiguration configuration) : base(configuration)
         {
-            Uri url = configuration.MakeUri("ws");
-            _client = new WebsocketClient(url);
+            _connection = new Subject<ConnectionObservation>();
 
-            Message = _client
+            Uri uri = configuration.MakeUri("ws");
+            _client = new WebsocketClient(uri);
+
+            MessageReceived = _client
                 .MessageReceived
                 .Select(message => new MessageObservation(message.Binary));
 
             _client
                 .ReconnectionHappened
-                .Subscribe(_ => _connection.OnNext(new ConnectionObservation(url)));
-            
+                .Subscribe(
+                    _ => _connection.OnNext(
+                        new ConnectionObservation(
+                            Result.Success<Exception, ConnectionState>(
+                                ConnectionState.Connected))));
+
             _client
                 .DisconnectionHappened
                 .Subscribe(OnDisconnection);
-
         }
-        
-        public void Start() => _client.Start();
 
-        public void Send(byte[] message) => _client.SendInstant(message);
+        public override void Start() => _client.Start();
 
-        public void Dispose()
+        public override void Send(byte[] message) => _client.SendInstant(message);
+
+        public override void Dispose()
         {
             _connection?.Dispose();
             _client?.Dispose();
@@ -52,11 +55,16 @@ namespace MonitorDesktop.Client.Sockets
             switch (info.Type)
             {
                 case DisconnectionType.Error:
-                    _connection.OnError(info.Exception);
+                    _connection.OnNext(
+                        new ConnectionObservation(
+                            Result.Failure<Exception, ConnectionState>(info.Exception)));
                     break;
 
                 default:
-                    _connection.OnCompleted();
+                    _connection.OnNext(
+                        new ConnectionObservation(
+                            Result.Success<Exception, ConnectionState>(
+                                ConnectionState.Disconnected)));
                     break;
             }
         }
