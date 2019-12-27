@@ -14,7 +14,7 @@ namespace MonitorDesktop.Sockets.Tests
         private const int TotalMessagesCount = 5;
 
         private readonly TimeSpan _messagesInterval = TimeSpan.FromMilliseconds(1);
-        private readonly IConfiguration _testsConfig = new TestsConfiguration("localhost", 3000);
+        private readonly TestsConfiguration _testsConfig = new TestsConfiguration("localhost", 3000);
         private readonly object _messagesLock = new object();
 
         private int _messagesCount;
@@ -88,15 +88,14 @@ namespace MonitorDesktop.Sockets.Tests
         private MockConnectionConsumer GetMockServer(IConnection serverConnection)
             => new MockConnectionConsumer(
                 serverConnection,
-                _testsConfig,
                 _ => { },
                 OnMessageReceived);
 
         private IConnection GetServerConnection() 
-            => new Server.Sockets.WebSocketConnectionFactory(_testsConfig).Create();
+            => new Server.Sockets.WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
 
         private IConnection GetClientConnection()
-            => new Client.Sockets.WebSocketConnectionFactory(_testsConfig).Create();
+            => new Client.Sockets.WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
 
         private void OnClientConnectionChanged(ConnectionObservation observation, IConnection connection)
             => observation.Info.Do(state => OnClientConnection(state, connection), _ => { });

@@ -15,11 +15,9 @@ namespace MonitorDesktop.Server.Sockets
         public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
         public IObservable<MessageObservation> MessageReceived => _messageReceived;
 
-        public WebSocketConnection(IConfiguration configuration)
+        public WebSocketConnection(string host, int port)
         {
-            var url = configuration.MakeUri("ws")
-                .ToString();
-            _server = new WebSocketServer(url);
+            _server = new WebSocketServer($"ws://{host}:{port}");
             _server.AddWebSocketService<ReactiveSocketListener>(
                 "/",
                 listener =>

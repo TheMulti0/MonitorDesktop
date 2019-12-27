@@ -9,7 +9,6 @@ namespace MonitorDesktop.Tests.Shared
 
         public MockConnectionConsumer(
             IConnection connection,
-            IConfiguration configuration,
             Action<ConnectionObservation> connectionCallback,
             Action<MessageObservation> messageCallback)
         {

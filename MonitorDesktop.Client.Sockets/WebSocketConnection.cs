@@ -16,11 +16,11 @@ namespace MonitorDesktop.Client.Sockets
         public IObservable<ConnectionObservation> ConnectionChanged => _connection;
         public IObservable<MessageObservation> MessageReceived { get; }
 
-        internal WebSocketConnection(IConfiguration configuration)
+        internal WebSocketConnection(string host, int port)
         {
             _connection = new Subject<ConnectionObservation>();
 
-            Uri uri = configuration.MakeUri("ws");
+            var uri = new Uri($"ws://{host}:{port}");
             _client = new WebsocketClient(uri);
 
             MessageReceived = _client

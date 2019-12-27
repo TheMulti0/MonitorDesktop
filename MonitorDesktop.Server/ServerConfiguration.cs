@@ -1,8 +1,6 @@
-using MonitorDesktop.Api;
-
 namespace MonitorDesktop.Server
 {
-    public class ServerConfiguration : IConfiguration
+    public class ServerConfiguration
     {
         public string Host { get; set; }
 

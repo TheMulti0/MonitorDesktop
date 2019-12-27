@@ -1,8 +1,6 @@
-﻿using MonitorDesktop.Api;
-
-namespace MonitorDesktop.Client
+﻿namespace MonitorDesktop.Client
 {
-    public class ClientConfiguration : IConfiguration
+    public class ClientConfiguration
     {
         public string Host { get; set; }
 
