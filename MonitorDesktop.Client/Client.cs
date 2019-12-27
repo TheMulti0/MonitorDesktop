@@ -22,14 +22,14 @@ namespace MonitorDesktop.Client
 
         public void Start()
         {
-            _connection.Start();
-
             _connection
                 .ConnectionChanged
                 .Subscribe(
                     OnConnection,
                     e => OnDisconnection(),
                     OnDisconnection);
+            
+            _connection.Start();
         }
 
         public void Dispose() => _connection.Dispose();
