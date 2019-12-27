@@ -18,7 +18,6 @@
     <ItemGroup>
       <ProjectReference Include="..\MonitorDesktop.Api\MonitorDesktop.Api.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Client\MonitorDesktop.Client.csproj" />
-      <ProjectReference Include="..\MonitorDesktop.Tests.Shared\MonitorDesktop.Tests.Shared.csproj" />
     </ItemGroup>
 
 </Project>

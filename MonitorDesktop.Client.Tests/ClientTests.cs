@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MonitorDesktop.Tests.Shared;
 
 namespace MonitorDesktop.Client.Tests
 {

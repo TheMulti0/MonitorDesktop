@@ -21,7 +21,6 @@
       <ProjectReference Include="..\MonitorDesktop.Client\MonitorDesktop.Client.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Server.Sockets\MonitorDesktop.Server.Sockets.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Server\MonitorDesktop.Server.csproj" />
-      <ProjectReference Include="..\MonitorDesktop.Tests.Shared\MonitorDesktop.Tests.Shared.csproj" />
     </ItemGroup>
 
 </Project>

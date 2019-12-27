@@ -1,11 +1,8 @@
 using System;
 using System.IO;
-using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
-using MonitorDesktop.Tests.Shared;
 
 namespace MonitorDesktop.Server.Tests
 {

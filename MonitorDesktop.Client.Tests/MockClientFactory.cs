@@ -1,6 +1,6 @@
 using MonitorDesktop.Api;
 
-namespace MonitorDesktop.Tests.Shared
+namespace MonitorDesktop.Client.Tests
 {
     public class MockClientFactory : IConnectionFactory<MockClient>
     {

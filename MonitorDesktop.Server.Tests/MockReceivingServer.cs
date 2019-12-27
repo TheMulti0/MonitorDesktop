@@ -1,11 +1,10 @@
 using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading;
 using MonitorDesktop.Api;
 using MonitorDesktop.Reactive;
 
-namespace MonitorDesktop.Tests.Shared
+namespace MonitorDesktop.Server.Tests
 {
     public class MockReceivingServer : IConnection
     {

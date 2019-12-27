@@ -1,6 +1,4 @@
-using MonitorDesktop.Api;
-
-namespace MonitorDesktop.Tests.Shared
+namespace MonitorDesktop.Sockets.Tests
 {
     public class TestsConfiguration
     {

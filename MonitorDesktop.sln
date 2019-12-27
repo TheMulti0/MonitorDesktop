@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Sockets.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Reactive", "MonitorDesktop.Reactive\MonitorDesktop.Reactive.csproj", "{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Tests.Shared", "MonitorDesktop.Tests.Shared\MonitorDesktop.Tests.Shared.csproj", "{660FF2E6-2B03-469D-9813-257E9F36E09D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Server.Tests", "MonitorDesktop.Server.Tests\MonitorDesktop.Server.Tests.csproj", "{0A413EFC-0CE1-49BC-BB9B-617E473D1721}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Client.Tests", "MonitorDesktop.Client.Tests\MonitorDesktop.Client.Tests.csproj", "{CA43DFDF-B3C4-481E-9B62-DE5D42FBA5F3}"
@@ -63,10 +61,6 @@ Global
 		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Release|Any CPU.Build.0 = Release|Any CPU
-		{660FF2E6-2B03-469D-9813-257E9F36E09D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{660FF2E6-2B03-469D-9813-257E9F36E09D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{660FF2E6-2B03-469D-9813-257E9F36E09D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{660FF2E6-2B03-469D-9813-257E9F36E09D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A413EFC-0CE1-49BC-BB9B-617E473D1721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A413EFC-0CE1-49BC-BB9B-617E473D1721}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A413EFC-0CE1-49BC-BB9B-617E473D1721}.Release|Any CPU.ActiveCfg = Release|Any CPU

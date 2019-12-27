@@ -3,7 +3,7 @@ using System.Reactive.Subjects;
 using MonitorDesktop.Api;
 using MonitorDesktop.Reactive;
 
-namespace MonitorDesktop.Tests.Shared
+namespace MonitorDesktop.Client.Tests
 {
     public class MockClient : IConnection
     {

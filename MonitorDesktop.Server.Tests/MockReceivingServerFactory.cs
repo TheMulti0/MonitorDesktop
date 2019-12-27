@@ -1,8 +1,7 @@
 using System;
-using System.Threading;
 using MonitorDesktop.Api;
 
-namespace MonitorDesktop.Tests.Shared
+namespace MonitorDesktop.Server.Tests
 {
     public class MockReceivingServerFactory : IConnectionFactory<MockReceivingServer>
     {
