@@ -26,9 +26,9 @@ namespace MonitorDesktop.Server
                 Directory.CreateDirectory(_configuration.ImagesPath);
             }
             
-            _connection.Start();
-            
             _connection.ConnectionChanged.Subscribe(OnConnection);
+
+            _connection.Start();
         }
 
         public void Dispose() => _connection.Dispose();
