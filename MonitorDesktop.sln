@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Extensions",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Sockets.Tests", "MonitorDesktop.Sockets.Tests\MonitorDesktop.Sockets.Tests.csproj", "{99B2F5C2-1AA1-4C7F-887B-438B2E0E389F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDesktop.Reactive", "MonitorDesktop.Reactive\MonitorDesktop.Reactive.csproj", "{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{99B2F5C2-1AA1-4C7F-887B-438B2E0E389F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99B2F5C2-1AA1-4C7F-887B-438B2E0E389F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99B2F5C2-1AA1-4C7F-887B-438B2E0E389F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F7AB1B8-64A2-4984-9C28-58D1AEF11A27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

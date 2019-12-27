@@ -1,7 +1,7 @@
 using System;
 using System.Reactive.Subjects;
 using MonitorDesktop.Api;
-using Optionally;
+using MonitorDesktop.Reactive;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -18,21 +18,18 @@ namespace MonitorDesktop.Server.Sockets
         protected override void OnOpen() =>
             _connection.OnNext(
                 new ConnectionObservation(
-                    Result.Success<Exception, ConnectionState>(
-                        ConnectionState.Connected)));
+                    Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Connected)));
 
         protected override void OnClose(CloseEventArgs e) =>
             _connection.OnNext(
                 new ConnectionObservation(
-                Result.Success<Exception, ConnectionState>(
-                    ConnectionState.Disconnected)));
+                Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Disconnected)));
 
         protected override void OnMessage(MessageEventArgs e) 
             => _message.OnNext(new MessageObservation(e.RawData));
 
         protected override void OnError(ErrorEventArgs e) =>
             _connection.OnNext(
-                new ConnectionObservation(
-                Result.Failure<Exception, ConnectionState>(e.Exception)));
+                new ConnectionObservation(Result.FromFailure<ConnectionState, Exception>(e.Exception)));
     }
 }

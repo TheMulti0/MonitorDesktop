@@ -1,5 +1,5 @@
 ﻿using System;
-using Optionally;
+using MonitorDesktop.Reactive;
 
 namespace MonitorDesktop.Api
 {
@@ -8,9 +8,9 @@ namespace MonitorDesktop.Api
     /// </summary>
     public class ConnectionObservation
     {
-        public IResult<Exception, ConnectionState> Info { get; }
+        public IResult<ConnectionState, Exception> Info { get; }
 
-        public ConnectionObservation(IResult<Exception, ConnectionState> info)
+        public ConnectionObservation(IResult<ConnectionState, Exception> info)
         {
             Info = info;
         }

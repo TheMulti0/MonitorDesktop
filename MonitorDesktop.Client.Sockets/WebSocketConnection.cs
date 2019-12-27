@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using MonitorDesktop.Api;
 using MonitorDesktop.Extensions;
-using Optionally;
+using MonitorDesktop.Reactive;
 using Websocket.Client;
 
 namespace MonitorDesktop.Client.Sockets
@@ -32,7 +32,7 @@ namespace MonitorDesktop.Client.Sockets
                 .Subscribe(
                     _ => _connection.OnNext(
                         new ConnectionObservation(
-                            Result.Success<Exception, ConnectionState>(
+                            Result.FromSuccess<ConnectionState, Exception>(
                                 ConnectionState.Connected))));
 
             _client
@@ -57,14 +57,13 @@ namespace MonitorDesktop.Client.Sockets
                 case DisconnectionType.Error:
                     _connection.OnNext(
                         new ConnectionObservation(
-                            Result.Failure<Exception, ConnectionState>(info.Exception)));
+                            Result.FromFailure<ConnectionState, Exception>(info.Exception)));
                     break;
 
                 default:
                     _connection.OnNext(
                         new ConnectionObservation(
-                            Result.Success<Exception, ConnectionState>(
-                                ConnectionState.Disconnected)));
+                            Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Disconnected)));
                     break;
             }
         }
