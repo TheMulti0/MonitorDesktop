@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
+using MonitorDesktop.Tests.Shared;
 
 namespace MonitorDesktop.Sockets.Tests
 {

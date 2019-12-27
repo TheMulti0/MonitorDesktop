@@ -1,9 +1,9 @@
 using System;
 using MonitorDesktop.Api;
 
-namespace MonitorDesktop.Sockets.Tests
+namespace MonitorDesktop.Tests.Shared
 {
-    internal class MockConnectionConsumer : IOperational
+    public class MockConnectionConsumer : IOperational
     {
         private readonly IConnection _connection;
 

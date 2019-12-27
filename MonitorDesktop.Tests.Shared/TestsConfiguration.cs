@@ -1,6 +1,6 @@
 using MonitorDesktop.Api;
 
-namespace MonitorDesktop.Sockets.Tests
+namespace MonitorDesktop.Tests.Shared
 {
     public class TestsConfiguration : IConfiguration
     {
