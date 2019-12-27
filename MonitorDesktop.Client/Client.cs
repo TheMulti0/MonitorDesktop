@@ -6,7 +6,7 @@ using MonitorDesktop.Api;
 
 namespace MonitorDesktop.Client
 {
-    public class Client : ConnectionConsumerBase<ClientConfiguration>
+    public class Client : IOperational
     {
         private readonly IConnection _connection;
         private readonly ClientConfiguration _configuration;
@@ -14,13 +14,13 @@ namespace MonitorDesktop.Client
 
         public Client(
             IConnection connection,
-            ClientConfiguration configuration) : base(connection, configuration)
+            ClientConfiguration configuration)
         {
             _connection = connection;
             _configuration = configuration;
         }
 
-        public override void Start()
+        public void Start()
         {
             _connection.Start();
 
@@ -32,7 +32,7 @@ namespace MonitorDesktop.Client
                     OnDisconnection);
         }
 
-        public override void Dispose() => _connection.Dispose();
+        public void Dispose() => _connection.Dispose();
 
         private void OnConnection(ConnectionObservation args) => _timer = Observable
             .Interval(

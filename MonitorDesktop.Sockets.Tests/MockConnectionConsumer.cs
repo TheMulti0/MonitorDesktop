@@ -3,7 +3,7 @@ using MonitorDesktop.Api;
 
 namespace MonitorDesktop.Sockets.Tests
 {
-    internal class MockConnectionConsumer : ConnectionConsumerBase<IConfiguration>
+    internal class MockConnectionConsumer : IOperational
     {
         private readonly IConnection _connection;
 
@@ -11,7 +11,7 @@ namespace MonitorDesktop.Sockets.Tests
             IConnection connection,
             IConfiguration configuration,
             Action<ConnectionObservation> connectionCallback,
-            Action<MessageObservation> messageCallback) : base(connection, configuration)
+            Action<MessageObservation> messageCallback)
         {
             _connection = connection;
 
@@ -19,8 +19,8 @@ namespace MonitorDesktop.Sockets.Tests
             _connection.MessageReceived.Subscribe(messageCallback);
         }
 
-        public override void Start() => _connection.Start();
+        public void Start() => _connection.Start();
 
-        public override void Dispose() => _connection.Dispose();
+        public void Dispose() => _connection.Dispose();
     }
 }

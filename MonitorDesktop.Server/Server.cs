@@ -6,20 +6,20 @@ using MonitorDesktop.Extensions;
 
 namespace MonitorDesktop.Server
 {
-    public class Server : ConnectionConsumerBase<ServerConfiguration>
+    public class Server : IOperational
     {
         private readonly IConnection _connection;
         private readonly ServerConfiguration _configuration;
 
         public Server(
             IConnection connection,
-            ServerConfiguration configuration) : base(connection, configuration)
+            ServerConfiguration configuration)
         {
             _connection = connection;
             _configuration = configuration;
         }
 
-        public override void Start()
+        public void Start()
         {
             if (!Directory.Exists(_configuration.ImagesPath))
             {
@@ -31,7 +31,7 @@ namespace MonitorDesktop.Server
             _connection.ConnectionChanged.Subscribe(OnConnection);
         }
 
-        public override void Dispose() => _connection.Dispose();
+        public void Dispose() => _connection.Dispose();
 
         private void OnConnection(ConnectionObservation observation)
         {
