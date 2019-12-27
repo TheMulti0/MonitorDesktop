@@ -8,7 +8,7 @@ namespace MonitorDesktop.Api
     public abstract class ConnectionConsumerBase<TConfiguration> : IOperational where TConfiguration : IConfiguration
     {
         protected ConnectionConsumerBase(
-            ConnectionBase connection,
+            IConnection connection,
             TConfiguration configuration)
         {
         }

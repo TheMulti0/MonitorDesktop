@@ -8,11 +8,11 @@ namespace MonitorDesktop.Server
 {
     public class Server : ConnectionConsumerBase<ServerConfiguration>
     {
-        private readonly ConnectionBase _connection;
+        private readonly IConnection _connection;
         private readonly ServerConfiguration _configuration;
 
         public Server(
-            ConnectionBase connection,
+            IConnection connection,
             ServerConfiguration configuration) : base(connection, configuration)
         {
             _connection = connection;

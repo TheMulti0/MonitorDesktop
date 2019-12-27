@@ -8,12 +8,12 @@ namespace MonitorDesktop.Client
 {
     public class Client : ConnectionConsumerBase<ClientConfiguration>
     {
-        private readonly ConnectionBase _connection;
+        private readonly IConnection _connection;
         private readonly ClientConfiguration _configuration;
         private IDisposable? _timer;
 
         public Client(
-            ConnectionBase connection,
+            IConnection connection,
             ClientConfiguration configuration) : base(connection, configuration)
         {
             _connection = connection;

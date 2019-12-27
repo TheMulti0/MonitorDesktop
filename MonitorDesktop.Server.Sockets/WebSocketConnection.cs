@@ -6,16 +6,16 @@ using WebSocketSharp.Server;
 
 namespace MonitorDesktop.Server.Sockets
 {
-    public class WebSocketConnection : ConnectionBase
+    public class WebSocketConnection : IConnection
     {
         private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
         private readonly Subject<MessageObservation> _messageReceived = new Subject<MessageObservation>();
         private readonly WebSocketServer _server;
 
-        public override IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
-        public override IObservable<MessageObservation> MessageReceived => _messageReceived;
+        public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
+        public IObservable<MessageObservation> MessageReceived => _messageReceived;
 
-        public WebSocketConnection(IConfiguration configuration) : base(configuration)
+        public WebSocketConnection(IConfiguration configuration)
         {
             var url = configuration.MakeUri("ws")
                 .ToString();
@@ -36,12 +36,12 @@ namespace MonitorDesktop.Server.Sockets
                 });
         }
 
-        public override void Start() => _server.Start();
+        public void Start() => _server.Start();
 
-        public override void Send(byte[] message)
+        public void Send(byte[] message)
             => throw new InvalidOperationException("WebSocketSharp server does not support sending messages");
 
-        public override void Dispose()
+        public void Dispose()
         {
             _connectionChanged.Dispose();
             _messageReceived.Dispose();

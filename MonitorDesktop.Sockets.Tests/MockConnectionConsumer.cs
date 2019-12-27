@@ -7,10 +7,10 @@ namespace MonitorDesktop.Sockets.Tests
     {
         private readonly Action<ConnectionObservation> _connectionCallback;
         private readonly Action<MessageObservation> _messageCallback;
-        private readonly ConnectionBase _connection;
+        private readonly IConnection _connection;
 
         public MockConnectionConsumer(
-            ConnectionBase connection,
+            IConnection connection,
             IConfiguration configuration,
             Action<ConnectionObservation> connectionCallback,
             Action<MessageObservation> messageCallback) : base(connection, configuration)

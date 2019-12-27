@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
-using MonitorDesktop.Client.Sockets;
 
 namespace MonitorDesktop.Sockets.Tests
 {
@@ -71,7 +70,7 @@ namespace MonitorDesktop.Sockets.Tests
 
         private void StartClient()
         {
-            ConnectionBase clientConnection = GetClientConnection();
+            IConnection clientConnection = GetClientConnection();
             clientConnection.Start();
             clientConnection.ConnectionChanged.Subscribe(
                 observation => OnClientConnectionChanged(observation, clientConnection));
@@ -79,29 +78,29 @@ namespace MonitorDesktop.Sockets.Tests
 
         private void StartServer()
         {
-            ConnectionBase serverConnection = GetServerConnection();
+            IConnection serverConnection = GetServerConnection();
             MockConnectionConsumer server = GetMockServer(serverConnection);
             server.Start();
         }
 
 
-        private MockConnectionConsumer GetMockServer(ConnectionBase serverConnection)
+        private MockConnectionConsumer GetMockServer(IConnection serverConnection)
             => new MockConnectionConsumer(
                 serverConnection,
                 _testsConfig,
                 _ => { },
                 OnMessageReceived);
 
-        private ConnectionBase GetServerConnection()
-            => new Server.Sockets.WebSocketConnection(_testsConfig);
+        private IConnection GetServerConnection() 
+            => new Server.Sockets.WebSocketConnectionFactory(_testsConfig).Create();
 
-        private ConnectionBase GetClientConnection()
-            => new WebSocketConnection(_testsConfig);
+        private IConnection GetClientConnection()
+            => new Client.Sockets.WebSocketConnectionFactory(_testsConfig).Create();
 
-        private void OnClientConnectionChanged(ConnectionObservation observation, ConnectionBase connection)
+        private void OnClientConnectionChanged(ConnectionObservation observation, IConnection connection)
             => observation.Info.Do(_ => { }, state => OnClientConnection(state, connection));
 
-        private void OnClientConnection(ConnectionState state, ConnectionBase sender)
+        private void OnClientConnection(ConnectionState state, IConnection sender)
         {
             if (state == ConnectionState.Connected)
             {
@@ -109,7 +108,7 @@ namespace MonitorDesktop.Sockets.Tests
             }
         }
 
-        private void BeginSending(ConnectionBase connection)
+        private void BeginSending(IConnection connection)
             => Observable
                 .Interval(_messagesInterval)
                 .Take(TotalMessagesCount)

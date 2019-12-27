@@ -8,15 +8,15 @@ using Websocket.Client;
 
 namespace MonitorDesktop.Client.Sockets
 {
-    public class WebSocketConnection : ConnectionBase
+    public class WebSocketConnection : IConnection
     {
         private readonly Subject<ConnectionObservation> _connection;
         private readonly WebsocketClient _client;
 
-        public override IObservable<ConnectionObservation> ConnectionChanged => _connection;
-        public override IObservable<MessageObservation> MessageReceived { get; }
+        public IObservable<ConnectionObservation> ConnectionChanged => _connection;
+        public IObservable<MessageObservation> MessageReceived { get; }
 
-        public WebSocketConnection(IConfiguration configuration) : base(configuration)
+        internal WebSocketConnection(IConfiguration configuration)
         {
             _connection = new Subject<ConnectionObservation>();
 
@@ -40,11 +40,11 @@ namespace MonitorDesktop.Client.Sockets
                 .Subscribe(OnDisconnection);
         }
 
-        public override void Start() => _client.Start();
+        public void Start() => _client.Start();
 
-        public override void Send(byte[] message) => _client.SendInstant(message);
+        public void Send(byte[] message) => _client.SendInstant(message);
 
-        public override void Dispose()
+        public void Dispose()
         {
             _connection?.Dispose();
             _client?.Dispose();

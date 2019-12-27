@@ -12,7 +12,8 @@ namespace MonitorDesktop.Client
             var config = await ConfigurationExtensions
                 .ReadConfigurationAsync<ClientConfiguration>("appconfig.json");
 
-            ConnectionBase connection = new WebSocketConnection(config);
+            var factory = new WebSocketConnectionFactory(config);
+            IConnection connection = factory.Create();
 
             ConnectionConsumerBase<ClientConfiguration> client = new Client(connection, config);
             client.Start();
