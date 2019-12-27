@@ -10,7 +10,7 @@ namespace MonitorDesktop.Sockets.Tests
         public MockConnectionConsumer(
             IConnection connection,
             Action<ConnectionObservation> connectionCallback,
-            Action<MessageObservation> messageCallback)
+            Action<Message> messageCallback)
         {
             _connection = connection;
 

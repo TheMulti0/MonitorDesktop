@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MonitorDesktop.Api;
 
 namespace MonitorDesktop.Client.Tests
 {
@@ -44,7 +45,7 @@ namespace MonitorDesktop.Client.Tests
                 FramesPerSecond = ImagesPerSecond
             };
         
-        private void OnMessageSent(byte[] message)
+        private void OnMessageSent(Message message)
         {
             lock (_imagesLock)
             {

@@ -46,7 +46,7 @@ namespace MonitorDesktop.Client
                 .CaptureScreen()
                 .Save(stream, ImageFormat.Png);
 
-            _connection.Send(stream.ToArray());
+            _connection.Send(new Message(GetType().Name, stream.ToArray()));
         }
 
         private void OnDisconnection() => _timer?.Dispose();

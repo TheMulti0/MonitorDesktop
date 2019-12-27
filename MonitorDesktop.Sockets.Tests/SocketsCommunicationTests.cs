@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
+using MonitorDesktop.Server.Sockets;
 
 namespace MonitorDesktop.Sockets.Tests
 {
@@ -51,7 +52,7 @@ namespace MonitorDesktop.Sockets.Tests
             {
                 return;
             }
-            
+
             lock (_messagesLock)
             {
                 Assert.Fail(
@@ -90,8 +91,8 @@ namespace MonitorDesktop.Sockets.Tests
                 _ => { },
                 OnMessageReceived);
 
-        private IConnection GetServerConnection() 
-            => new Server.Sockets.WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
+        private IConnection GetServerConnection()
+            => new WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
 
         private IConnection GetClientConnection()
             => new Client.Sockets.WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
@@ -113,11 +114,11 @@ namespace MonitorDesktop.Sockets.Tests
                 .Take(TotalMessagesCount)
                 .Subscribe(
                     _ => connection.Send(
-                        new byte[]
-                        {
-                        }));
+                        new Message(
+                            GetType().Name,
+                            new byte[] { })));
 
-        private void OnMessageReceived(MessageObservation info)
+        private void OnMessageReceived(Message info)
         {
             lock (_messagesLock)
             {

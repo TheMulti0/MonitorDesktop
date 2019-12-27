@@ -11,8 +11,8 @@ namespace MonitorDesktop.Api
     public interface IConnection : IOperational
     {
         IObservable<ConnectionObservation> ConnectionChanged { get; }
-        IObservable<MessageObservation> MessageReceived { get; }
+        IObservable<Message> MessageReceived { get; }
         
-        void Send(byte[] message);
+        void Send(Message message);
     }
 }

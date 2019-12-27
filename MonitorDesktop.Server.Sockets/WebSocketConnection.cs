@@ -9,11 +9,11 @@ namespace MonitorDesktop.Server.Sockets
     public class WebSocketConnection : IConnection
     {
         private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
-        private readonly Subject<MessageObservation> _messageReceived = new Subject<MessageObservation>();
+        private readonly Subject<Message> _messageReceived = new Subject<Message>();
         private readonly WebSocketServer _server;
 
         public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
-        public IObservable<MessageObservation> MessageReceived => _messageReceived;
+        public IObservable<Message> MessageReceived => _messageReceived;
 
         public WebSocketConnection(string host, int port)
         {
@@ -36,7 +36,7 @@ namespace MonitorDesktop.Server.Sockets
 
         public void Start() => _server.Start();
 
-        public void Send(byte[] message)
+        public void Send(Message message)
             => throw new InvalidOperationException("WebSocketSharp server does not support sending messages");
 
         public void Dispose()

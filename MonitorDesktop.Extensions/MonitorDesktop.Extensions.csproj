@@ -6,10 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MonitorDesktop.Api\MonitorDesktop.Api.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="System.Reactive" Version="4.3.1" />
       <PackageReference Include="System.Text.Json" Version="4.7.0" />
     </ItemGroup>

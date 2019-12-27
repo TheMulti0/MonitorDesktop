@@ -14,7 +14,7 @@ namespace MonitorDesktop.Client.Sockets
         private readonly WebsocketClient _client;
 
         public IObservable<ConnectionObservation> ConnectionChanged => _connection;
-        public IObservable<MessageObservation> MessageReceived { get; }
+        public IObservable<Message> MessageReceived { get; }
 
         internal WebSocketConnection(string host, int port)
         {
@@ -25,7 +25,7 @@ namespace MonitorDesktop.Client.Sockets
 
             MessageReceived = _client
                 .MessageReceived
-                .Select(message => new MessageObservation(message.Binary));
+                .Select(message => message.Binary.Deserialize<Message>());
 
             _client
                 .ReconnectionHappened
@@ -42,7 +42,7 @@ namespace MonitorDesktop.Client.Sockets
 
         public void Start() => _client.Start();
 
-        public void Send(byte[] message) => _client.SendInstant(message);
+        public void Send(Message message) => _client.SendInstant(message.Serialize());
 
         public void Dispose()
         {

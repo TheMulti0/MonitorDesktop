@@ -38,7 +38,7 @@ namespace MonitorDesktop.Server
             _connection.MessageReceived.SubscribeAsync(OnMessageAsync);
         }
 
-        private Task OnMessageAsync(MessageObservation message)
+        private Task OnMessageAsync(Message message)
         {
             DateTime now = DateTime.Now;
             string combine = Path.Combine(_configuration.ImagesPath, $"{now.Ticks}.png");
