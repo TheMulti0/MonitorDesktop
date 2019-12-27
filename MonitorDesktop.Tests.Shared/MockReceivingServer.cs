@@ -7,7 +7,7 @@ using MonitorDesktop.Reactive;
 
 namespace MonitorDesktop.Tests.Shared
 {
-    public class MockConnection : IConnection
+    public class MockReceivingServer : IConnection
     {
         private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
         private readonly Subject<MessageObservation> _messageReceived = new Subject<MessageObservation>();
@@ -16,15 +16,13 @@ namespace MonitorDesktop.Tests.Shared
         public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
         public IObservable<MessageObservation> MessageReceived => _messageReceived;
 
-        public MockConnection(TimeSpan messageInterval, int messageCount, CancellationToken token)
+        public MockReceivingServer(TimeSpan messageInterval, int messageCount)
         {
             _timer = Observable
                 .Interval(messageInterval)
                 .Take(messageCount)
                 .Subscribe(
                     l => _messageReceived.OnNext(new MessageObservation(new byte[] { })));
-
-            token.Register(_timer.Dispose);
         }
 
         public void Start() =>

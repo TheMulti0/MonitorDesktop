@@ -12,44 +12,55 @@ namespace MonitorDesktop.Server.Tests
     [TestClass]
     public class ServerTests
     {
+        private const string ImagesPath = "test-images";
         private const int MessagesCount = 10;
         private const double Delay = 10;
         private readonly TimeSpan _messageInterval = TimeSpan.FromMilliseconds(10);
-        private readonly string _imagesPath = "test-images";
 
         private Server _server;
 
         [TestMethod]
         public void TestImageArrival()
         {
-            var config = new ServerConfiguration()
+            _server = GetServer();
+            _server.Start();
+
+            Thread.Sleep(_messageInterval * Delay * MessagesCount);
+
+            int fileCount = Directory.GetFiles(ImagesPath).Length;
+            DisposeResources();
+            Assert.AreEqual(MessagesCount, fileCount);
+        }
+
+        private void DisposeResources()
+        {
+            _server.Dispose();
+            Directory.Delete(ImagesPath, true);
+        }
+
+        private Server GetServer()
+        {
+            ServerConfiguration config = GetConfiguration();
+            IConnection connection = GetMockConnection();
+            return new Server(connection, config);
+        }
+
+        private IConnection GetMockConnection() 
+            => new MockReceivingServerFactory(_messageInterval, MessagesCount).Create();
+
+        private static ServerConfiguration GetConfiguration() =>
+            new ServerConfiguration()
             {
                 Host = "localhost",
                 Port = 3000,
-                ImagesPath = _imagesPath
+                ImagesPath = ImagesPath
             };
-            
-            var cts = new CancellationTokenSource();
-
-            var factory = new MockConnectionFactory(_messageInterval, MessagesCount, cts.Token);
-            IConnection connection = factory.Create();
-
-            _server = new Server(connection, config);
-            _server.Start();
-
-            TimeSpan waitTime = _messageInterval * Delay * MessagesCount;
-            
-            Thread.Sleep(waitTime);
-            
-            OnNext();
-            
-        }
 
         private void OnNext()
         {
             _server.Dispose();
-            int fileCount = Directory.GetFiles(_imagesPath).Length;
-            Directory.Delete(_imagesPath, true);
+            int fileCount = Directory.GetFiles(ImagesPath).Length;
+            Directory.Delete(ImagesPath, true);
             Assert.AreEqual(MessagesCount, fileCount);
         }
     }
