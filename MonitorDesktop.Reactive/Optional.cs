@@ -23,6 +23,7 @@ namespace MonitorDesktop.Reactive
 
         internal Optional()
         {
+            _value = default(TValue);
             HasValue = false;
         }
         
