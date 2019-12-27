@@ -5,8 +5,6 @@ namespace MonitorDesktop.Sockets.Tests
 {
     internal class MockConnectionConsumer : ConnectionConsumerBase<IConfiguration>
     {
-        private readonly Action<ConnectionObservation> _connectionCallback;
-        private readonly Action<MessageObservation> _messageCallback;
         private readonly IConnection _connection;
 
         public MockConnectionConsumer(
@@ -17,11 +15,8 @@ namespace MonitorDesktop.Sockets.Tests
         {
             _connection = connection;
 
-            _connectionCallback = connectionCallback;
-            _messageCallback = messageCallback;
-            
-            _connection.ConnectionChanged.Subscribe(_connectionCallback);
-            _connection.MessageReceived.Subscribe(_messageCallback);
+            _connection.ConnectionChanged.Subscribe(connectionCallback);
+            _connection.MessageReceived.Subscribe(messageCallback);
         }
 
         public override void Start() => _connection.Start();
