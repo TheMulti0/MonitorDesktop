@@ -76,14 +76,14 @@ namespace MonitorDesktop.Client.Sockets
             switch (info.Type)
             {
                 case DisconnectionType.Error:
-                    _logger.LogCritical(info.Exception, "Disconnected with an exception");
+                    _logger.LogError(info.Exception, "Disconnected with an exception");
                     _connection.OnNext(
                         new ConnectionInfo(
                             Result.FromFailure<ConnectionState, Exception>(info.Exception)));
                     break;
 
                 default:
-                    _logger.LogCritical($"'{info.Type}' disconnection event occured");
+                    _logger.LogError($"'{info.Type}' disconnection event occured");
                     _connection.OnNext(
                         new ConnectionInfo(
                             Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Disconnected)));
