@@ -52,13 +52,5 @@ namespace MonitorDesktop.Server.Tests
                 Port = 3000,
                 ImagesPath = ImagesPath
             };
-
-        private void OnNext()
-        {
-            _server.Dispose();
-            int fileCount = Directory.GetFiles(ImagesPath).Length;
-            Directory.Delete(ImagesPath, true);
-            Assert.AreEqual(MessagesCount, fileCount);
-        }
     }
 }
