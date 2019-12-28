@@ -13,35 +13,30 @@ namespace MonitorDesktop.Reactive
     
     internal class Result<TSuccess, TFailure> : IResult<TSuccess, TFailure>
     {
-        public bool HasValue { get; }
-
-        private IOptional<TSuccess> Success { get; }
-
-        private IOptional<TFailure> Failure { get; }
+        private readonly IOptional<TSuccess> _success;
+        private readonly IOptional<TFailure> _failure;
 
         internal Result(TSuccess success)
         {
-            Success = Optional.FromValue(success);
-            HasValue = true;
+            _success = Optional.FromValue(success);
             
-            Failure = Optional.Empty<TFailure>();
+            _failure = Optional.Empty<TFailure>();
         }
 
         internal Result(TFailure failure)
         {
-            Success = Optional.Empty<TSuccess>();
-            HasValue = false;
+            _success = Optional.Empty<TSuccess>();
             
-            Failure = Optional.FromValue(failure);
+            _failure = Optional.FromValue(failure);
         }
         
         public void Do(
             Action<TSuccess> successConsumer,
             Action<TFailure> failureConsumer)
         {
-            Success.Do(
+            _success.Do(
                 successConsumer,
-                () => Failure.Do(
+                () => _failure.Do(
                     failureConsumer,
                     () => { }));
         }
@@ -50,9 +45,9 @@ namespace MonitorDesktop.Reactive
             Func<TSuccess, T> successMapper,
             Func<TFailure, T> failureMapper)
         {
-            return Success.Map(
+            return _success.Map(
                 successMapper,
-                () => Failure.Map(
+                () => _failure.Map(
                     failureMapper,
                     () => default(T)));
         }

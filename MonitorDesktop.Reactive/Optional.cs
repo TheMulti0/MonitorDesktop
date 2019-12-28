@@ -12,26 +12,26 @@ namespace MonitorDesktop.Reactive
     internal class Optional<TValue> : IOptional<TValue>
     {
         private readonly TValue _value;
+        private readonly bool _hasValue;
 
-        public bool HasValue { get; }
         
         internal Optional(TValue value)
         {
             _value = value;
-            HasValue = true;
+            _hasValue = true;
         }
 
         internal Optional()
         {
-            _value = default(TValue);
-            HasValue = false;
+            _value = default;
+            _hasValue = false;
         }
         
         public void Do(
             Action<TValue> valueConsumer,
             Action nullConsumer)
         {
-            if (HasValue)
+            if (_hasValue)
             {
                 valueConsumer(_value);
             }
@@ -42,6 +42,6 @@ namespace MonitorDesktop.Reactive
         }
 
         public T Map<T>(Func<TValue, T> valueMapper, Func<T> defaultMapper) 
-            => HasValue ? valueMapper(_value) : defaultMapper();
+            => _hasValue ? valueMapper(_value) : defaultMapper();
     }
 }
