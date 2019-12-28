@@ -97,8 +97,8 @@ namespace MonitorDesktop.Sockets.Tests
         private IConnection GetClientConnection()
             => new Client.Sockets.WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
 
-        private void OnClientConnectionChanged(ConnectionObservation observation, IConnection connection)
-            => observation.Info.Do(state => OnClientConnection(state, connection), _ => { });
+        private void OnClientConnectionChanged(ConnectionInfo info, IConnection connection)
+            => info.State.Do(state => OnClientConnection(state, connection), _ => { });
 
         private void OnClientConnection(ConnectionState state, IConnection sender)
         {

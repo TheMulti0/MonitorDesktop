@@ -10,7 +10,7 @@ namespace MonitorDesktop.Api
     /// <see cref="IOperational" />
     public interface IConnection : IOperational
     {
-        IObservable<ConnectionObservation> ConnectionChanged { get; }
+        IObservable<ConnectionInfo> ConnectionChanged { get; }
         IObservable<Message> MessageReceived { get; }
         
         void Send(Message message);

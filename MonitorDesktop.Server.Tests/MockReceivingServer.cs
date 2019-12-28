@@ -8,11 +8,11 @@ namespace MonitorDesktop.Server.Tests
 {
     public class MockReceivingServer : IConnection
     {
-        private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
+        private readonly Subject<ConnectionInfo> _connectionChanged = new Subject<ConnectionInfo>();
         private readonly Subject<Message> _messageReceived = new Subject<Message>();
         private readonly IDisposable _timer;
 
-        public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
+        public IObservable<ConnectionInfo> ConnectionChanged => _connectionChanged;
         public IObservable<Message> MessageReceived => _messageReceived;
 
         public MockReceivingServer(TimeSpan messageInterval, int messageCount)
@@ -26,7 +26,7 @@ namespace MonitorDesktop.Server.Tests
 
         public void Start() =>
             _connectionChanged.OnNext(
-                new ConnectionObservation(Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Connected)));
+                new ConnectionInfo(Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Connected)));
 
         public void Send(Message message) => throw new InvalidOperationException("This connection is to be used for receiving messages only.");
 

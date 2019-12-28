@@ -8,11 +8,11 @@ namespace MonitorDesktop.Server.Sockets
 {
     public class WebSocketConnection : IConnection
     {
-        private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
+        private readonly Subject<ConnectionInfo> _connectionChanged = new Subject<ConnectionInfo>();
         private readonly Subject<Message> _messageReceived = new Subject<Message>();
         private readonly WebSocketServer _server;
 
-        public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
+        public IObservable<ConnectionInfo> ConnectionChanged => _connectionChanged;
         public IObservable<Message> MessageReceived => _messageReceived;
 
         public WebSocketConnection(string host, int port)

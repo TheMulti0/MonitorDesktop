@@ -10,20 +10,20 @@ namespace MonitorDesktop.Server.Sockets
 {
     public class ReactiveSocketListener : WebSocketBehavior
     {
-        private readonly Subject<ConnectionObservation> _connection = new Subject<ConnectionObservation>();
+        private readonly Subject<ConnectionInfo> _connection = new Subject<ConnectionInfo>();
         private readonly Subject<Message> _message = new Subject<Message>();
 
-        public IObservable<ConnectionObservation> Connection => _connection;
+        public IObservable<ConnectionInfo> Connection => _connection;
         public IObservable<Message> Message => _message;
 
         protected override void OnOpen() =>
             _connection.OnNext(
-                new ConnectionObservation(
+                new ConnectionInfo(
                     Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Connected)));
 
         protected override void OnClose(CloseEventArgs e) =>
             _connection.OnNext(
-                new ConnectionObservation(
+                new ConnectionInfo(
                 Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Disconnected)));
 
         protected override void OnMessage(MessageEventArgs e) 
@@ -31,6 +31,6 @@ namespace MonitorDesktop.Server.Sockets
 
         protected override void OnError(ErrorEventArgs e) =>
             _connection.OnNext(
-                new ConnectionObservation(Result.FromFailure<ConnectionState, Exception>(e.Exception)));
+                new ConnectionInfo(Result.FromFailure<ConnectionState, Exception>(e.Exception)));
     }
 }

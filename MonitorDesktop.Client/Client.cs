@@ -34,7 +34,7 @@ namespace MonitorDesktop.Client
 
         public void Dispose() => _connection.Dispose();
 
-        private void OnConnection(ConnectionObservation args) => _timer = Observable
+        private void OnConnection(ConnectionInfo args) => _timer = Observable
             .Interval(
                 TimeSpan.FromSeconds(1 / _configuration.FramesPerSecond))
             .Subscribe(interval => SendMessage());

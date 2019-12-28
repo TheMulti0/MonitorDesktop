@@ -9,13 +9,13 @@ namespace MonitorDesktop.Client.Tests
 {
     public class MockClient : IConnection
     {
-        private readonly Subject<ConnectionObservation> _connectionChanged = new Subject<ConnectionObservation>();
+        private readonly Subject<ConnectionInfo> _connectionChanged = new Subject<ConnectionInfo>();
         private readonly Subject<Message> _messageReceived = new Subject<Message>();
         private readonly Subject<Message> _messageSent = new Subject<Message>();
         private readonly int _messagesCount;
         private int _currentMessagesCount;
 
-        public IObservable<ConnectionObservation> ConnectionChanged => _connectionChanged;
+        public IObservable<ConnectionInfo> ConnectionChanged => _connectionChanged;
         public IObservable<Message> MessageReceived => _messageReceived;
         public IObservable<Message> MessageSent => _messageSent;
 
@@ -24,7 +24,7 @@ namespace MonitorDesktop.Client.Tests
         public void Start()
             =>
                 _connectionChanged.OnNext(
-                    new ConnectionObservation(Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Connected)));
+                    new ConnectionInfo(Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Connected)));
 
         public void Send(Message message)
         {

@@ -6,13 +6,13 @@ namespace MonitorDesktop.Api
     /// <summary>
     /// Arguments for a push-based connection changed event 
     /// </summary>
-    public class ConnectionObservation
+    public class ConnectionInfo
     {
-        public IResult<ConnectionState, Exception> Info { get; }
+        public IResult<ConnectionState, Exception> State { get; }
 
-        public ConnectionObservation(IResult<ConnectionState, Exception> info)
+        public ConnectionInfo(IResult<ConnectionState, Exception> state)
         {
-            Info = info;
+            State = state;
         }
     }
 }

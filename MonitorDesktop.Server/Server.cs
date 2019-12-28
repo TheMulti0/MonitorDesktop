@@ -33,7 +33,7 @@ namespace MonitorDesktop.Server
 
         public void Dispose() => _connection.Dispose();
 
-        private void OnConnection(ConnectionObservation observation)
+        private void OnConnection(ConnectionInfo info)
         {
             _connection.MessageReceived.SubscribeAsync(OnMessageAsync);
         }

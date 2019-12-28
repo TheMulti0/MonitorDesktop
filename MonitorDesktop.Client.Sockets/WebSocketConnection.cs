@@ -10,15 +10,15 @@ namespace MonitorDesktop.Client.Sockets
 {
     public class WebSocketConnection : IConnection
     {
-        private readonly Subject<ConnectionObservation> _connection;
+        private readonly Subject<ConnectionInfo> _connection;
         private readonly WebsocketClient _client;
 
-        public IObservable<ConnectionObservation> ConnectionChanged => _connection;
+        public IObservable<ConnectionInfo> ConnectionChanged => _connection;
         public IObservable<Message> MessageReceived { get; }
 
         internal WebSocketConnection(string host, int port)
         {
-            _connection = new Subject<ConnectionObservation>();
+            _connection = new Subject<ConnectionInfo>();
 
             var uri = new Uri($"ws://{host}:{port}");
             _client = new WebsocketClient(uri);
@@ -31,7 +31,7 @@ namespace MonitorDesktop.Client.Sockets
                 .ReconnectionHappened
                 .Subscribe(
                     _ => _connection.OnNext(
-                        new ConnectionObservation(
+                        new ConnectionInfo(
                             Result.FromSuccess<ConnectionState, Exception>(
                                 ConnectionState.Connected))));
 
@@ -56,13 +56,13 @@ namespace MonitorDesktop.Client.Sockets
             {
                 case DisconnectionType.Error:
                     _connection.OnNext(
-                        new ConnectionObservation(
+                        new ConnectionInfo(
                             Result.FromFailure<ConnectionState, Exception>(info.Exception)));
                     break;
 
                 default:
                     _connection.OnNext(
-                        new ConnectionObservation(
+                        new ConnectionInfo(
                             Result.FromSuccess<ConnectionState, Exception>(ConnectionState.Disconnected)));
                     break;
             }
