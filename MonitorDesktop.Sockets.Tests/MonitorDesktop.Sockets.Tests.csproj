@@ -19,6 +19,7 @@
       <ProjectReference Include="..\MonitorDesktop.Api\MonitorDesktop.Api.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Client.Sockets\MonitorDesktop.Client.Sockets.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Client\MonitorDesktop.Client.csproj" />
+      <ProjectReference Include="..\MonitorDesktop.Extensions\MonitorDesktop.Extensions.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Server.Sockets\MonitorDesktop.Server.Sockets.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Server\MonitorDesktop.Server.csproj" />
     </ItemGroup>

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\MonitorDesktop.Extensions\MonitorDesktop.Extensions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="WebSocketConnection.cs" />
+  </ItemGroup>
+
 </Project>

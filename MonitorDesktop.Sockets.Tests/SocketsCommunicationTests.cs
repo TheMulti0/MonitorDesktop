@@ -2,9 +2,11 @@ using System;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
 using MonitorDesktop.Server.Sockets;
+using LoggerFactoryExtensions = MonitorDesktop.Extensions.LoggerFactoryExtensions;
 
 namespace MonitorDesktop.Sockets.Tests
 {
@@ -13,6 +15,7 @@ namespace MonitorDesktop.Sockets.Tests
     {
         private const int TotalMessagesCount = 5;
 
+        private readonly ILoggerFactory _loggerFactory = LoggerFactoryExtensions.CreateDefault();
         private readonly TimeSpan _messagesInterval = TimeSpan.FromMilliseconds(1);
         private readonly TestsConfiguration _testsConfig = new TestsConfiguration("localhost", 3000);
         private readonly object _messagesLock = new object();
@@ -95,7 +98,11 @@ namespace MonitorDesktop.Sockets.Tests
             => new WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
 
         private IConnection GetClientConnection()
-            => new Client.Sockets.WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
+            => new Client.Sockets.ClientWebSocketFactory(
+                _loggerFactory.CreateLogger<Client.Sockets.ClientWebSocket>(),
+                _testsConfig.Host,
+                _testsConfig.Port
+                ).Create();
 
         private void OnClientConnectionChanged(ConnectionInfo info, IConnection connection)
             => info.State.Do(state => OnClientConnection(state, connection), _ => { });

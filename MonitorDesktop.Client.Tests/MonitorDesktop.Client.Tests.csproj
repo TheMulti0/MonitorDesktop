@@ -18,6 +18,7 @@
     <ItemGroup>
       <ProjectReference Include="..\MonitorDesktop.Api\MonitorDesktop.Api.csproj" />
       <ProjectReference Include="..\MonitorDesktop.Client\MonitorDesktop.Client.csproj" />
+      <ProjectReference Include="..\MonitorDesktop.Extensions\MonitorDesktop.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

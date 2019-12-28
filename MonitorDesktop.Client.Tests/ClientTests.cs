@@ -1,7 +1,9 @@
 using System;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
+using LoggerFactoryExtensions = MonitorDesktop.Extensions.LoggerFactoryExtensions;
 
 namespace MonitorDesktop.Client.Tests
 {
@@ -12,14 +14,15 @@ namespace MonitorDesktop.Client.Tests
         private const int ImagesPerSecond = 30;
         private const int Delay = 10;
         private readonly object _imagesLock = new object();
-        private int _imagesCount = 0;
+        private readonly ILoggerFactory _loggerFactory = LoggerFactoryExtensions.CreateDefault();
+        private int _imagesCount;
 
         [TestMethod]
         public void TestClientSnapshots()
         {
             Client client = GetClient();
             client.Start();
-            
+
             Thread.Sleep(TimeSpan.FromSeconds(1.0 / ImagesPerSecond * TotalMessages * Delay));
             lock (_imagesLock)
             {
@@ -28,7 +31,10 @@ namespace MonitorDesktop.Client.Tests
         }
 
         private Client GetClient()
-            => new Client(GetConnection(), GetConfig());
+            => new Client(
+                _loggerFactory.CreateLogger<Client>(),
+                GetConnection(),
+                GetConfig());
 
         private MockClient GetConnection()
         {
@@ -38,13 +44,13 @@ namespace MonitorDesktop.Client.Tests
         }
 
         private static ClientConfiguration GetConfig() =>
-            new ClientConfiguration()
+            new ClientConfiguration
             {
                 Host = "localhost",
                 Port = 3000,
                 FramesPerSecond = ImagesPerSecond
             };
-        
+
         private void OnMessageSent(Message message)
         {
             lock (_imagesLock)
