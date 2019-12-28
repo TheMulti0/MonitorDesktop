@@ -7,5 +7,7 @@ namespace MonitorDesktop.Reactive
         bool HasValue { get; }
         
         void Do(Action<TValue> valueConsumer, Action nullConsumer);
+        
+        T Map<T>(Func<TValue, T> valueMapper, Func<T> defaultMapper);
     }
 }

@@ -35,13 +35,26 @@ namespace MonitorDesktop.Reactive
             Failure = Optional.FromValue(failure);
         }
         
-        public void Do(Action<TSuccess> successConsumer, Action<TFailure> failureConsumer)
+        public void Do(
+            Action<TSuccess> successConsumer,
+            Action<TFailure> failureConsumer)
         {
             Success.Do(
                 successConsumer,
                 () => Failure.Do(
                     failureConsumer,
                     () => { }));
+        }
+
+        public T Map<T>(
+            Func<TSuccess, T> successMapper,
+            Func<TFailure, T> failureMapper)
+        {
+            return Success.Map(
+                successMapper,
+                () => Failure.Map(
+                    failureMapper,
+                    () => default(T)));
         }
     }
 }

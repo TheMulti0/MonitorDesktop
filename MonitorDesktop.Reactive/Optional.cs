@@ -27,7 +27,9 @@ namespace MonitorDesktop.Reactive
             HasValue = false;
         }
         
-        public void Do(Action<TValue> valueConsumer, Action nullConsumer)
+        public void Do(
+            Action<TValue> valueConsumer,
+            Action nullConsumer)
         {
             if (HasValue)
             {
@@ -38,5 +40,8 @@ namespace MonitorDesktop.Reactive
                 nullConsumer();
             }
         }
+
+        public T Map<T>(Func<TValue, T> valueMapper, Func<T> defaultMapper) 
+            => HasValue ? valueMapper(_value) : defaultMapper();
     }
 }
