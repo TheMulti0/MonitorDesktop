@@ -19,7 +19,8 @@ namespace MonitorDesktop.Client
             var factory = new ClientWebSocketFactory(
                 loggerFactory.CreateLogger<ClientWebSocket>(),
                 config.Host,
-                config.Port);
+                config.Port,
+                config.ReconnectionTimeout);
             IConnection connection = factory.Create();
 
             var client = new Client(

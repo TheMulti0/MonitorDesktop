@@ -13,27 +13,31 @@ namespace MonitorDesktop.Client.Sockets
     public class ClientWebSocket : IConnection
     {
         private readonly ILogger<ClientWebSocket> _logger;
+
         private readonly Subject<ConnectionInfo> _connection;
         private readonly WebsocketClient _client;
 
+        public IObservable<ConnectionInfo> ConnectionChanged => _connection;
+        public IObservable<Message> MessageReceived { get; private set; }
+        
         internal ClientWebSocket(
             ILogger<ClientWebSocket> logger,
             string host,
-            int port)
+            int port,
+            TimeSpan? reconnectionTimeout)
         {
             _logger = logger;
             _connection = new Subject<ConnectionInfo>();
 
-            var uri = new Uri($"ws://{host}:{port}");
-            _client = new WebsocketClient(uri);
+            _client = new WebsocketClient(new Uri($"ws://{host}:{port}"))
+            {
+                ReconnectTimeout = reconnectionTimeout
+            };
 
             SubscribeToEvents();
 
             _logger.LogInformation("Initialized");
         }
-
-        public IObservable<ConnectionInfo> ConnectionChanged => _connection;
-        public IObservable<Message> MessageReceived { get; private set; }
 
         public void Start()
         {

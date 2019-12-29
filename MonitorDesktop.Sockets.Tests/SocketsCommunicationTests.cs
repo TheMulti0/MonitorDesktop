@@ -106,8 +106,8 @@ namespace MonitorDesktop.Sockets.Tests
             => new ClientWebSocketFactory(
                 _loggerFactory.CreateLogger<ClientWebSocket>(),
                 _testsConfig.Host,
-                _testsConfig.Port
-                ).Create();
+                _testsConfig.Port,
+                null).Create();
 
         private void OnClientConnectionChanged(ConnectionInfo info, IConnection connection)
             => info.State.Do(state => OnClientConnection(state, connection), _ => { });
