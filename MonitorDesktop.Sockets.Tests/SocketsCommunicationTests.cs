@@ -5,6 +5,7 @@ using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
+using MonitorDesktop.Client.Sockets;
 using MonitorDesktop.Server.Sockets;
 using LoggerFactoryExtensions = MonitorDesktop.Extensions.LoggerFactoryExtensions;
 
@@ -95,11 +96,15 @@ namespace MonitorDesktop.Sockets.Tests
                 OnMessageReceived);
 
         private IConnection GetServerConnection()
-            => new WebSocketConnectionFactory(_testsConfig.Host, _testsConfig.Port).Create();
+            => new ServerWebSocketFactory(
+                _loggerFactory.CreateLogger<ServerWebSocket>(),
+                _testsConfig.Host,
+                _testsConfig.Port
+                ).Create();
 
         private IConnection GetClientConnection()
-            => new Client.Sockets.ClientWebSocketFactory(
-                _loggerFactory.CreateLogger<Client.Sockets.ClientWebSocket>(),
+            => new ClientWebSocketFactory(
+                _loggerFactory.CreateLogger<ClientWebSocket>(),
                 _testsConfig.Host,
                 _testsConfig.Port
                 ).Create();

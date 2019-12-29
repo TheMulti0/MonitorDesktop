@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Reactive.Subjects;
+using Microsoft.Extensions.Logging;
 using MonitorDesktop.Api;
 using MonitorDesktop.Extensions;
 using WebSocketSharp.Server;
 
 namespace MonitorDesktop.Server.Sockets
 {
-    public class WebSocketConnection : IConnection
+    public class ServerWebSocket : IConnection
     {
+        private readonly ILogger<ServerWebSocket> _logger;
         private readonly Subject<ConnectionInfo> _connectionChanged = new Subject<ConnectionInfo>();
         private readonly Subject<Message> _messageReceived = new Subject<Message>();
         private readonly WebSocketServer _server;
@@ -15,13 +17,19 @@ namespace MonitorDesktop.Server.Sockets
         public IObservable<ConnectionInfo> ConnectionChanged => _connectionChanged;
         public IObservable<Message> MessageReceived => _messageReceived;
 
-        public WebSocketConnection(string host, int port)
+        public ServerWebSocket(
+            ILogger<ServerWebSocket> logger, 
+            string host,
+            int port)
         {
+            _logger = logger;
             _server = new WebSocketServer($"ws://{host}:{port}");
             _server.AddWebSocketService<ReactiveSocketListener>(
                 "/",
                 listener =>
                 {
+                    _logger.LogInformation("Subscribed to endpoint listener");
+                    
                     listener.Connection.Subscribe(
                         _connectionChanged.OnNext,
                         _connectionChanged.OnError,
@@ -32,9 +40,15 @@ namespace MonitorDesktop.Server.Sockets
                         _messageReceived.OnError,
                         _messageReceived.OnCompleted);
                 });
+            
+            _logger.LogInformation("Initialized");
         }
 
-        public void Start() => _server.Start();
+        public void Start()
+        {
+            _server.Start();
+            _logger.LogInformation("Started");
+        }
 
         public void Send(Message message)
             => throw new InvalidOperationException("WebSocketSharp server does not support sending messages");
@@ -45,6 +59,7 @@ namespace MonitorDesktop.Server.Sockets
             _messageReceived.Dispose();
             
             _server.Stop();
+            _logger.LogInformation("Disposed");
         }
     }
 }

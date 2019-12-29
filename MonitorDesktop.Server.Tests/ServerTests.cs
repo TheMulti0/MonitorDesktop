@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonitorDesktop.Api;
+using LoggerFactoryExtensions = MonitorDesktop.Extensions.LoggerFactoryExtensions;
 
 namespace MonitorDesktop.Server.Tests
 {
@@ -13,6 +15,7 @@ namespace MonitorDesktop.Server.Tests
         private const int MessagesCount = 10;
         private const double Delay = 10;
         private readonly TimeSpan _messageInterval = TimeSpan.FromMilliseconds(10);
+        private readonly ILoggerFactory _loggerFactory = LoggerFactoryExtensions.CreateDefault();
 
         private Server _server;
 
@@ -24,7 +27,8 @@ namespace MonitorDesktop.Server.Tests
 
             Thread.Sleep(_messageInterval * Delay * MessagesCount);
 
-            int fileCount = Directory.GetFiles(ImagesPath).Length;
+            int fileCount = Directory.GetFiles(ImagesPath)
+                .Length;
             DisposeResources();
             Assert.AreEqual(MessagesCount, fileCount);
         }
@@ -36,17 +40,16 @@ namespace MonitorDesktop.Server.Tests
         }
 
         private Server GetServer()
-        {
-            ServerConfiguration config = GetConfiguration();
-            IConnection connection = GetMockConnection();
-            return new Server(connection, config);
-        }
+            => new Server(
+                _loggerFactory.CreateLogger<Server>(),
+                GetMockConnection(),
+                GetConfiguration());
 
-        private IConnection GetMockConnection() 
+        private IConnection GetMockConnection()
             => new MockReceivingServerFactory(_messageInterval, MessagesCount).Create();
 
         private static ServerConfiguration GetConfiguration() =>
-            new ServerConfiguration()
+            new ServerConfiguration
             {
                 Host = "localhost",
                 Port = 3000,

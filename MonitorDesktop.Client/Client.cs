@@ -46,8 +46,8 @@ namespace MonitorDesktop.Client
             _logger.LogInformation("Disposed");
         }
 
-        private void OnConnectionChanged(ConnectionInfo args) =>
-            args.State.Do(
+        private void OnConnectionChanged(ConnectionInfo info) =>
+            info.State.Do(
                 state =>
                 {
                     switch (state)

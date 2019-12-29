@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MonitorDesktop.Api;
 using MonitorDesktop.Extensions;
 using MonitorDesktop.Server.Sockets;
+using LoggerFactoryExtensions = MonitorDesktop.Extensions.LoggerFactoryExtensions;
 
 namespace MonitorDesktop.Server
 {
@@ -9,13 +11,21 @@ namespace MonitorDesktop.Server
     {
         private static async Task Main(string[] args)
         {
+            ILoggerFactory loggerFactory = LoggerFactoryExtensions.CreateDefault();
+            
             var config = await JsonExtensions
                 .ReadJsonAsync<ServerConfiguration>("appconfig.json");
 
-            var factory = new WebSocketConnectionFactory(config.Host, config.Port);
+            var factory = new ServerWebSocketFactory(
+                loggerFactory.CreateLogger<ServerWebSocket>(),
+                config.Host,
+                config.Port);
             IConnection connection = factory.Create();
 
-            var server = new Server(connection, config);
+            var server = new Server(
+                loggerFactory.CreateLogger<Server>(),
+                connection,
+                config);
             server.Start();
 
             await Task.Delay(-1);
